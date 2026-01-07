@@ -26,4 +26,3 @@ class Ticket(db.Model):
     description = db.Column(db.Text, nullable = True)
     status = db.Column(db.String(20), nullable = False, default = 'open')
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable = False)
-
