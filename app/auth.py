@@ -1,0 +1,31 @@
+from flask import Blueprint, request, jsonify
+
+from app import db
+
+from app.models import User
+
+import secrets
+
+auth = Blueprint('auth', __name__)
+
+
+@auth.route('/login', methods = ['POST'])
+def login():
+    data = request.get_json() or {}
+    email = data.get('email')
+    password = data.get('password')
+    
+    if not email or not password:
+        return jsonify({'error': 'Email and password are required'}), 400
+    
+    user = User.query.filter_by(email=email).first()
+
+    if user is None or not user.check_password(password):
+        return jsonify({'message' : 'Invalid email or password'}), 401
+    
+    token = secrets.token_hex(16)
+    user.token = token
+
+    db.session.commit()
+
+    return jsonify({'message': 'Login successful', 'token' : token}), 200
