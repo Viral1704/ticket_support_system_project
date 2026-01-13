@@ -62,3 +62,16 @@ def get_user_from_token():
     if not token:
         return None
     return User.query.filter_by(token=token).first()
+
+
+@auth.route('/logout', methods = ['POST'])
+def logout():
+    user = get_user_from_token()
+    if user is None:
+        return jsonify({'message' : 'Invalid or missing token'}), 401
+    
+    user.token = None 
+
+    db.session.commit()
+
+    return jsonify({'message' : 'Logout successful'}), 200
