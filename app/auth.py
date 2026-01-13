@@ -29,3 +29,28 @@ def login():
     db.session.commit()
 
     return jsonify({'message': 'Login successful', 'token' : token}), 200
+
+
+@auth.route('/register', methods = ['POST'])
+def register():
+    data = request.get_json() or {}
+    username = data.get('username')
+    email = data.get('email')
+    password = data.get('password')
+
+    if not username or not email or not password:
+        return jsonify({'message' : 'Username, email and password are required'}), 400
+    
+    user = User.query.filter_by(email = email).first()
+    if user is not None:
+        return jsonify({'message' : "Email already registered"}), 400
+    
+    new_user = User(username = username, email = email)
+    new_user.password = password
+
+    db.session.add(new_user)
+    db.session.commit()
+
+    return jsonify({'message' : 'User registered successfully', 
+                    'user_id' : new_user.id,
+                    }), 201
