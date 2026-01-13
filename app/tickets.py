@@ -91,7 +91,7 @@ def update_my_ticket(ticket_id):
     title = data.get('title')
     description = data.get('description')
     status = data.get('status')
-    
+
     if title is None and description is None and status is None:
         return jsonify({'message': 'Nothing to update'}), 400
 
@@ -102,7 +102,7 @@ def update_my_ticket(ticket_id):
         ticket.description = description
 
     if status is not None:
-        if status not in ['open', 'in_progress', 'closed']:
+        if status not in ['open', 'in-progress', 'closed']:
             return jsonify({'message' : 'Invalid status'}), 400
         ticket.status = status
 
@@ -114,3 +114,22 @@ def update_my_ticket(ticket_id):
         'description' : ticket.description,
         'status' : ticket.status
     }), 200
+
+
+@tickets.route('/<int:ticket_id>', methods = ['DELETE'])
+def delete_my_ticket(ticket_id):
+    from app.auth import get_user_from_token
+    user = get_user_from_token()
+    if user is None:
+        return jsonify({'message' : 'Unauthorized'}), 401
+    
+    ticket = Ticket.query.filter_by(id = ticket_id).first()
+    if ticket is None:
+        return jsonify({'message' : 'Ticket not found'}), 404
+    
+    if ticket.user_id != user.id:
+        return jsonify({'message' : 'Forbidden'}), 403
+    
+    db.session.delete(ticket)
+    db.session.commit()
+    return '', 204
