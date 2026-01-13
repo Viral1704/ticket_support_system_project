@@ -49,3 +49,25 @@ def get_my_tickets():
             'status' : ticket.status
         })
     return jsonify({'tickets' : tickets_list}), 200
+
+
+@tickets.route('/<int:ticket_id>', methods = ['GET'])
+def get_my_ticket(ticket_id):
+    from app.auth import get_user_from_token
+    user = get_user_from_token()
+    if user is None:
+        return jsonify({'message' : 'Unauthorized'}), 401
+    
+    ticket = Ticket.query.filter_by(id = ticket_id).first()
+    if ticket is None:
+        return jsonify({'message' : 'Ticket not found'}), 404
+    
+    if ticket.user_id != user.id:
+        return jsonify({'message' : 'Forbidden'}), 403
+    
+    return jsonify({
+        'id' : ticket.id,
+        'title' : ticket.title,
+        'description' : ticket.description,
+        'status' : ticket.status
+    }), 200
