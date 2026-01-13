@@ -54,3 +54,11 @@ def register():
     return jsonify({'message' : 'User registered successfully', 
                     'user_id' : new_user.id,
                     }), 201
+
+
+
+def get_user_from_token():
+    token = request.headers.get('Authorization')
+    if not token:
+        return None
+    return User.query.filter_by(token=token).first()
