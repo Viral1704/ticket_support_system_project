@@ -30,3 +30,22 @@ def create_ticket():
                     'description' : new_ticket.description,
                     'status' : new_ticket.status
                     }), 201
+
+
+
+@tickets.route('', methods = ['GET'])
+def get_my_tickets():
+    from app.auth import get_user_from_token
+    user = get_user_from_token()
+    if user is None:
+        return jsonify({'message' : 'Unauthorized'}), 401
+    tickets = Ticket.query.filter_by(user_id = user.id).all()
+    tickets_list = []
+    for ticket in tickets:
+        tickets_list.append({
+            'id' : ticket.id,
+            'title' : ticket.title,
+            'description' : ticket.description,
+            'status' : ticket.status
+        })
+    return jsonify({'tickets' : tickets_list}), 200
