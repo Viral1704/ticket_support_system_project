@@ -22,14 +22,24 @@ def create_ticket():
     
     description = data.get('description')
 
-    new_ticket = Ticket(title = title, description = description, user_id = user.id)
+    priority = data.get('priority', 'low')
+    if priority not in ['low', 'medium', 'high', 'urgent']:
+        return jsonify({'message' : 'Invalid priority'}), 400
+    
+    category = data.get('category', 'general')
+    if category not in ['general', 'billing', 'technical', 'account', 'bug', 'other']:
+        return jsonify({'message' : 'Invalid category'}), 400
+
+    new_ticket = Ticket(title = title, description = description, priority = priority, category = category, user_id = user.id)
 
     db.session.add(new_ticket)
     db.session.commit()
     return jsonify({'ticket_id' : new_ticket.id,
                     'title' : new_ticket.title,
                     'description' : new_ticket.description,
-                    'status' : new_ticket.status
+                    'status' : new_ticket.status,
+                    'priority' : new_ticket.priority,
+                    'category' : new_ticket.category
                     }), 201
 
 
@@ -46,7 +56,9 @@ def get_my_tickets():
             'id' : ticket.id,
             'title' : ticket.title,
             'description' : ticket.description,
-            'status' : ticket.status
+            'status' : ticket.status,
+            'priority' : ticket.priority,
+            'category' : ticket.category
         })
     return jsonify({'tickets' : tickets_list}), 200
 
@@ -68,7 +80,9 @@ def get_my_ticket(ticket_id):
         'id' : ticket.id,
         'title' : ticket.title,
         'description' : ticket.description,
-        'status' : ticket.status
+        'status' : ticket.status,
+        'priority' : ticket.priority,
+        'category' : ticket.category
     }), 200
 
 
@@ -83,14 +97,16 @@ def update_my_ticket(ticket_id):
         return jsonify({'message' : 'Ticket not found'}), 404
     
     if ticket.user_id != user.id:
-        return jsonify({'message' : 'Forbidden'}), 403
+        return jsonify({'message' : 'You do not own this ticket'}), 403
     
     data = request.get_json() or {}
     title = data.get('title')
     description = data.get('description')
     status = data.get('status')
+    priority = data.get('priority')
+    category = data.get('category')
 
-    if title is None and description is None and status is None:
+    if title is None and description is None and status is None and priority is None and category is None:
         return jsonify({'message': 'Nothing to update'}), 400
 
     if title is not None:
@@ -104,13 +120,25 @@ def update_my_ticket(ticket_id):
             return jsonify({'message' : 'Invalid status'}), 400
         ticket.status = status
 
+    if priority is not None:
+        if priority not in ['low', 'medium', 'high', 'urgent']:
+            return jsonify({'message' : 'Invalid priority'}), 400
+        ticket.priority = priority
+
+    if category is not None:
+        if category not in ['general', 'billing', 'technical', 'account', 'bug', 'other']:
+            return jsonify({'message' : 'Invalid category'}), 400
+        ticket.category = category
+
     db.session.commit()
 
     return jsonify({
         'id' : ticket.id,
         'title' : ticket.title,
         'description' : ticket.description,
-        'status' : ticket.status
+        'status' : ticket.status,
+        'priority' : ticket.priority,
+        'category' : ticket.category
     }), 200
 
 
