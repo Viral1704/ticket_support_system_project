@@ -2,6 +2,8 @@ from app import db
 
 from werkzeug.security import generate_password_hash, check_password_hash
 
+from datetime import datetime
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     username = db.Column(db.String(80), nullable = False)
@@ -27,4 +29,6 @@ class Ticket(db.Model):
     status = db.Column(db.String(20), nullable = False, default = 'open')
     category = db.Column(db.String(20), nullable = False, default = 'general')
     priority = db.Column(db.String(20), nullable = False, default = 'low')
+    created_at = db.Column(db.DateTime, default = datetime.utcnow, nullable = False)
+    updated_at = db.Column(db.DateTime, default = datetime.utcnow, onupdate = datetime.utcnow, nullable = False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable = False)

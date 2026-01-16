@@ -39,7 +39,8 @@ def create_ticket():
                     'description' : new_ticket.description,
                     'status' : new_ticket.status,
                     'priority' : new_ticket.priority,
-                    'category' : new_ticket.category
+                    'category' : new_ticket.category,
+                    'created_at' : new_ticket.created_at.isoformat()
                     }), 201
 
 
@@ -58,7 +59,9 @@ def get_my_tickets():
             'description' : ticket.description,
             'status' : ticket.status,
             'priority' : ticket.priority,
-            'category' : ticket.category
+            'category' : ticket.category,
+            'created_at' : ticket.created_at.isoformat(),
+            'updated_at' : ticket.updated_at.isoformat()
         })
     return jsonify({'tickets' : tickets_list}), 200
 
@@ -82,7 +85,9 @@ def get_my_ticket(ticket_id):
         'description' : ticket.description,
         'status' : ticket.status,
         'priority' : ticket.priority,
-        'category' : ticket.category
+        'category' : ticket.category,
+        'created_at' : ticket.created_at.isoformat(),
+        'updated_at' : ticket.updated_at.isoformat()
     }), 200
 
 
@@ -138,7 +143,8 @@ def update_my_ticket(ticket_id):
         'description' : ticket.description,
         'status' : ticket.status,
         'priority' : ticket.priority,
-        'category' : ticket.category
+        'category' : ticket.category,
+        'updated_at' : ticket.updated_at.isoformat()
     }), 200
 
 
