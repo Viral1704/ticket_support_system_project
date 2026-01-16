@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify 
 
-from app.models import Ticket
+from app.models import Ticket, User
 
 from app import db
 
@@ -165,3 +165,37 @@ def delete_my_ticket(ticket_id):
     db.session.delete(ticket)
     db.session.commit()
     return '', 204
+
+
+@tickets.route('/<int:ticket_id>/assign', methods = ['PUT'])
+def assign_ticket(ticket_id):
+    user = get_user_from_token()
+    if user is None or user.role != 'admin':
+        return jsonify({'message' : 'You are not authorized to assign tickets'}), 403
+    
+    ticket = Ticket.query.get(ticket_id)
+    if ticket is None:
+        return jsonify({'message' : 'Ticket not found'}), 404
+    
+    data = request.get_json() or {}
+    agent_id = data.get('agent_id')
+
+    if agent_id is None:
+        return jsonify({'message' : 'Agent ID is required'}), 400
+    
+    agent = User.query.get(agent_id)
+    if agent is None:
+        return jsonify({'message': 'Agent not found'}), 404
+    
+    if agent.role != 'agent':
+        return jsonify({'message': 'User is not an agent'}), 400
+    
+    ticket.assigned_to = agent.id
+
+    db.session.commit()
+
+    return jsonify({
+        'message': 'Ticket assigned successfully',
+        'ticket_id': ticket.id,
+        'assigned_to': agent.username
+    }), 200

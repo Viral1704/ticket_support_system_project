@@ -32,6 +32,10 @@ class Ticket(db.Model):
     status = db.Column(db.String(20), nullable = False, default = 'open')
     category = db.Column(db.String(20), nullable = False, default = 'general')
     priority = db.Column(db.String(20), nullable = False, default = 'low')
+
+    assigned_to = db.Column(db.Integer, db.ForeignKey('user.id'), nullable = True)
+
     created_at = db.Column(db.DateTime, default = datetime.utcnow, nullable = False)
     updated_at = db.Column(db.DateTime, default = datetime.utcnow, onupdate = datetime.utcnow, nullable = False)
+    
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable = False)
