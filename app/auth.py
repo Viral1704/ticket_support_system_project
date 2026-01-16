@@ -47,7 +47,7 @@ def register():
     if user is not None:
         return jsonify({'message' : "Email already registered"}), 400
     
-    new_user = User(username = username, email = email)
+    new_user = User(username = username, email = email, role = 'user')
     new_user.password = password
 
     db.session.add(new_user)
