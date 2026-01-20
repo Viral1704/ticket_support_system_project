@@ -62,25 +62,25 @@ PUT	/tickets/<id>/assign	Assign ticket (Admin only)
 
 ### 🔐 Login API
 POST /auth/login  
-![Login](screenshots/login.png)
+![Login](screenshots./login.png)
 
 ---
 
 ### 📝 Create Ticket API
 POST /tickets  
-![Create Ticket](screenshots/create_ticket.png)
+![Create Ticket](screenshots./create_ticket.png)
 
 ---
 
 ### ✏ Update Ticket API
 PUT /tickets/<ticket_id>  
-![Update Ticket](screenshots/update_ticket.png)
+![Update Ticket](screenshots./update_ticket.png)
 
 ---
 
 ### 👨‍💼 Assign Ticket API
 PUT /tickets/<ticket_id>/assign  
-![Assign](screenshots/assign_ticket.png)
+![Assign](screenshots./assign_ticket.png)
 
 
 ⚙ Setup Instructions
