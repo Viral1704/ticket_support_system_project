@@ -57,21 +57,30 @@ GET	/tickets	Get my tickets
 PUT	/tickets/<id>	Update ticket
 DELETE	/tickets/<id>	Delete ticket
 PUT	/tickets/<id>/assign	Assign ticket (Admin only)
-📸 API Screenshots
-🔐 Login API
-POST /auth/login
 
+## 📸 API Screenshots
 
-📝 Create Ticket API
-POST /tickets
+### 🔐 Login API
+POST /auth/login  
+![Login](screenshots/login.png)
 
+---
 
-✏ Update Ticket API
-PUT /tickets/<ticket_id>
+### 📝 Create Ticket API
+POST /tickets  
+![Create Ticket](screenshots/create_ticket.png)
 
+---
 
-👨‍💼 Assign Ticket API
-PUT /tickets/<ticket_id>/assign
+### ✏ Update Ticket API
+PUT /tickets/<ticket_id>  
+![Update Ticket](screenshots/update_ticket.png)
+
+---
+
+### 👨‍💼 Assign Ticket API
+PUT /tickets/<ticket_id>/assign  
+![Assign](screenshots/assign_ticket.png)
 
 
 ⚙ Setup Instructions
