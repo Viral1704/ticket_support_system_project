@@ -1,26 +1,20 @@
 🎫 Ticket Support System API
 
-A backend REST API built using Flask to manage support tickets with authentication, roles, and ticket assignment.
+A backend REST API built using Flask to manage customer support tickets with authentication, roles, priority handling, and ticket assignment.
 
-🚀 Features
+🚀 Project Overview
 
-User Registration & Login
+This project simulates a real company support system where:
 
-Token-based Authentication
+Users can create support tickets
 
-Role System (User / Agent / Admin)
+Admin can assign tickets to agents
 
-Create, Update, Delete Tickets
+Agents can work on assigned tickets
 
-Ticket Priority & Category
+Tickets have priority, category & status
 
-Assign Tickets to Agents (Admin only)
-
-Database Migrations using Flask-Migrate
-
-Ownership & Access Control
-
-API Testing via Postman
+All APIs are secured using token-based authentication
 
 🛠 Tech Stack
 
@@ -28,56 +22,101 @@ Python
 
 Flask
 
-Flask-SQLAlchemy
+Flask SQLAlchemy (ORM)
 
-Flask-Migrate
+Flask Migrate
 
 SQLite
 
-Postman
+Postman (API Testing)
 
-📌 API Screenshots
-🔐 Login
+✨ Features
 
-📝 Create Ticket
+User Registration & Login
 
-🔄 Update Ticket
+Token based authentication
 
-👨‍💼 Assign Ticket (Admin → Agent)
+Role system (User, Admin, Agent)
 
-⚙ Setup Instructions
-git clone <your-repo-link>
-cd ticket_support_system_project
-python -m venv venv
-source venv/bin/activate   # Windows: venv\Scripts\activate
-pip install -r requirements.txt
-flask db upgrade
-python run.py
+Ticket CRUD operations
 
-📬 API Endpoints
+Ticket Priority & Category
+
+Ticket Assignment (Admin → Agent)
+
+Created & Updated timestamps
+
+Database migrations
+
+📌 API Endpoints
 Method	Endpoint	Description
 POST	/auth/register	Register user
 POST	/auth/login	Login
 POST	/tickets	Create ticket
-GET	/tickets	View my tickets
+GET	/tickets	Get my tickets
 PUT	/tickets/<id>	Update ticket
 DELETE	/tickets/<id>	Delete ticket
-PUT	/tickets/<id>/assign	Assign ticket (Admin)
-🧠 What I Learned
+PUT	/tickets/<id>/assign	Assign ticket (Admin only)
+📸 API Screenshots
+🔐 Login API
+POST /auth/login
 
-Flask App Factory pattern
 
-Blueprint architecture
+📝 Create Ticket API
+POST /tickets
 
-Database relationships
 
-Role-based access control
+✏ Update Ticket API
+PUT /tickets/<ticket_id>
 
-Schema migration workflow
 
-Secure API design
+👨‍💼 Assign Ticket API
+PUT /tickets/<ticket_id>/assign
 
-📌 Author
+
+⚙ Setup Instructions
+1️⃣ Clone Repository
+git clone <your-repo-link>
+cd ticket_support_system_project
+
+2️⃣ Create Virtual Environment
+python -m venv venv
+venv\Scripts\activate
+
+3️⃣ Install Dependencies
+pip install -r requirements.txt
+
+4️⃣ Run Migrations
+flask db upgrade
+
+5️⃣ Run Server
+flask run
+
+
+Server will start on
+👉 http://127.0.0.1:5000
+
+🧪 Testing
+
+Use Postman to test all APIs.
+
+📚 What I Learned
+
+Flask project structure
+
+Blueprints
+
+SQLAlchemy ORM
+
+Database migrations
+
+Authentication & roles
+
+API security
+
+Real-world backend logic
+
+👤 Author
 
 Viral Vaghasiya
 Backend Developer (Flask)
